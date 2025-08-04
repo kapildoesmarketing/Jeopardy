@@ -108,6 +108,8 @@
 
     </main>
 
+    <audio id="clueSound" src="assets/tone.mp3" preload="auto"></audio>
+
 <script>
     // --- GAME STATE ---
     let gameStarted = false;
@@ -155,6 +157,7 @@
     const currentTeamDisplay = document.getElementById('currentTeamDisplay');
     const timerDisplay = document.getElementById('timerDisplay');
     const endGameButton = document.getElementById('endGameButton');
+    const clueSound = document.getElementById('clueSound');
 
     // --- RENDER FUNCTIONS ---
     function renderGame() {
@@ -224,6 +227,10 @@
     function selectQuestion(event) {
         const questionId = parseInt(event.target.dataset.questionId);
         if (answeredQuestions.includes(questionId)) return;
+        
+        // Play sound
+        clueSound.currentTime = 0;
+        clueSound.play();
 
         answeredQuestions.push(questionId);
         const question = jeopardyQuestions.find(q => q.id === questionId);

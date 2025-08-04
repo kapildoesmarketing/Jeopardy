@@ -108,7 +108,8 @@
 
     </main>
 
-    <audio id="clueSound" src="tone.mp3" preload="auto"></audio>
+    <audio id="clueSound" src="assets/tone.mp3" preload="auto"></audio>
+    <audio id="backgroundMusic" src="assets/background.mp3" preload="auto" loop></audio>
 
 <script>
     // --- GAME STATE ---
@@ -158,6 +159,7 @@
     const timerDisplay = document.getElementById('timerDisplay');
     const endGameButton = document.getElementById('endGameButton');
     const clueSound = document.getElementById('clueSound');
+    const backgroundMusic = document.getElementById('backgroundMusic');
 
     // --- RENDER FUNCTIONS ---
     function renderGame() {
@@ -221,6 +223,11 @@
         answeredQuestions = [];
         teamScores = teams.reduce((acc, team) => ({ ...acc, [team.name]: 0 }), {});
         clueDisplayCard.innerHTML = `<h2 class="text-3xl font-medium text-gray-600">Select a question to display the clue.</h2>`;
+        
+        backgroundMusic.volume = 0.7; // Set volume to 70%
+        backgroundMusic.currentTime = 0;
+        backgroundMusic.play();
+
         renderGame();
     }
 
@@ -324,6 +331,9 @@
         gameStarted = false;
         questionGrid.innerHTML = '';
         
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+
         let highestScore = -Infinity;
         let winners = [];
         for (const teamName in teamScores) {
@@ -338,9 +348,12 @@
         let winnerMessage;
         if (winners.length > 1) {
             winnerMessage = `It's a tie between ${winners.join(' & ')}!`;
-        } else {
+        } else if (winners.length === 1) {
             winnerMessage = `${winners[0]} wins the game!`;
+        } else {
+             winnerMessage = "No winner this time!";
         }
+
 
         clueDisplayCard.innerHTML = `
             <h2 class="text-4xl font-bold">Game Over!</h2>

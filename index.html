@@ -199,7 +199,7 @@
 
     function renderQuestionGrid() {
         questionGrid.innerHTML = '';
-        for (let i = 1; i <= 20; i++) {
+        for (let i = 1; i <= 15; i++) {
             const questionDiv = document.createElement('div');
             questionDiv.className = `question-number ${answeredQuestions.includes(i) ? 'answered' : ''}`;
             questionDiv.textContent = i;

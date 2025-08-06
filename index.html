@@ -184,11 +184,11 @@
     ];
 
     const bonusQuestions = [
-        { teamIndex: 0, clue: "According to a survey by GWI, what percentage of YouTube Shorts users in India do not use Instagram Reels?", answer: "44%" },
-        { teamIndex: 1, clue: "In what percentage of consumer journeys is Google and/or YouTube present when a new brand or product is discovered?", answer: "87%" },
-        { teamIndex: 2, clue: "What percentage of shoppers have looked for shopping ideas on Google?", answer: "81%" },
-        { teamIndex: 3, clue: "According to a Kantar survey, what percentage of Indian consumers used YouTube in the last month?", answer: "80%" },
-        { teamIndex: 4, clue: "On average, how many times greater was the 'Purchase Intent' uplift from YouTube Ads compared to Social Platform Ads in India?", answer: "1.2x" }
+        { teamIndex: 0, clue: "According to a survey conducted by GWI, in India, x% of YouTube Shorts users don't use Instagram Reels", options: ["24%", "34%", "44%", "54%"], answer: "44%" },
+        { teamIndex: 1, clue: "Google and/or YouTube are present in x% of the journeys where consumers said they discovered a new brand , product or retailer", options: ["67%", "77%", "87%", "97%"], answer: "87%" },
+        { teamIndex: 2, clue: "x% of shoppers looked for shopping ideas on Google.", options: ["81%", "71%", "61%", "51%"], answer: "81%" },
+        { teamIndex: 3, clue: "According to a survey conducted by Kantar, in the past month, x% of Indian consumers claimed to have used YouTube, compared to 45% for Jiocinema + Hotstar and 3% for Amazon Prime.", options: ["60%", "70%", "80%", "90%"], answer: "80%" },
+        { teamIndex: 4, clue: "On average YouTube Ads drove an uplift on 'Purchase Intent' x times greater than Social Platform Ads across all Kantar Context Lab Studies in India.", options: ["1.2x", "1.5x", "2.0x", "2.5x"], answer: "1.2x" }
     ];
     
     const jeopardyQuestions = [
@@ -196,17 +196,17 @@
         { id: 2, clue: "Merchants using this new Demand Gen feature have seen an average 11% increase in conversion value by seamlessly adding products to a user's cart on their website.", response: "What are Checkout Links?" },
         { id: 3, clue: "Powered by Google AI, this feature helps campaigns capture additional valuable conversions by tapping into more diverse search sources.", response: "What is Smart Bidding Exploration?" },
         { id: 4, clue: "This new Performance Max feature provides channel-level breakdowns of performance, helping advertisers optimize their campaigns.", response: "What is Channel Performance Reporting?" },
-        { id: 5, clue: "Now offering increased visibility within Performance Max, this report allows you to find customer queries and make informed optimizations.", response: "What is the Search Terms report?" },
-        { id: 6, clue: "This Google-owned inventory is now available on Demand Gen.", response: "What is Maps?" },
-        { id: 7, clue: "This interactive shopping experience, powered by the Google Merchant Center, lets viewers discover and engage with products directly from the big screen.", response: "What is Shoppable CTV?" },
-        { id: 8, clue: "This most prominent placement is now shoppable on mobile.", response: "What is Shoppable Masthead (MH)?" },
-        { id: 9, clue: "This Search product/feature expands what AI Overviews can do, with more advanced reasoning and multimodality.", response: "What is AI Mode?" },
-        { id: 10, clue: "This keywordless targeting technology for Performance Max and Search is considered the best way to leverage ads in AI Overviews.", response: "What is broad match?" },
-        { id: 11, clue: "This feature, which was previously available in PMax, Search, and Shopping, is now available in Demand Gen campaigns.", response: "What is New Customer Acquisition (NCA)?" },
-        { id: 12, clue: "With this updated platform, you can deepen existing connections, find new ones, and integrate authentic creator content into your ad strategies.", response: "What is the Creator Partnerships Hub?" },
-        { id: 13, clue: "This new tool helps you analyze cross-channel performance and adjust budgets, directly in Google Analytics.", response: "What is the Cross-Channel Budgeting Tool?" },
-        { id: 14, clue: "This tagging solution enhances conversion data accuracy by routing it through your own server, improving bidding and ROAS.", response: "What is Google Tag Gateway?" },
-        { id: 15, clue: "This new NCA feature optimizes not just for new customers, but specifically for those not yet searching for your brand.", response: "What is Prospecting Mode in NCA?" },
+        { id: 5, clue: "Now offering increased visibility within Performance Max, this report allows you to find customer queries and make informed optimizations.", response: "What is the Search terms report?" },
+        { id: 6, clue: "This is Google owned inventory is now available on Demand Gen", response: "What is Maps?" },
+        { id: 7, clue: "Interactive shopping experience, powered by the Google Merchant Center, that lets viewers discover and engage with products directly from the big screen.", response: "What is Shoppable CTV" },
+        { id: 8, clue: "Most prominent placement, is now shoppable on Mobile", response: "What is Shoppable MH" },
+        { id: 9, clue: "This is new Search product / feature expands what AI Overviews can do, with more advanced reasoning and multimodality", response: "What is AI mode?" },
+        { id: 10, clue: "This feature on Search OR the keywordless targeting technology of Performance Max OR AI Max in Search (beta) will be the best way to leverage ads in AI Overviews.", response: "What is broad match?" },
+        { id: 11, clue: "This feature is now available in Demand Gen campaigns which was earlier available in Pmax, Search & Shopping", response: "What is NCA?" },
+        { id: 12, clue: "With this updated new platform, you can deepen existing connections, find new ones and integrate authentic creator content into your ad strategies", response: "What is creator partnerships hub?" },
+        { id: 13, clue: "This new feature / tool helps you analyze cross-channel performance and determine where to adjust budgets or invest incremental media dollars, directly in Google Analytics.", response: "What is Cross-Channel Budgeting Tool ?" },
+        { id: 14, clue: "This tagging solution for advertisers enhances conversion data accuracy by routing it through your website’s own server, improving bidding, campaign optimization, and ROAS.", response: "What is Google tag gateway?" },
+        { id: 15, clue: "This new NCA feature expands on existing capabilities of the new customer acquisition goal to not only optimize to the acquisition of new customers, but specifically optimize towards ones who are not yet searching for or engaging with your Brand", response: "Prospecting Mode in NCA" },
     ];
 
     // --- DOM ELEMENTS CACHING---
@@ -250,7 +250,7 @@
             teamCard.className = `card p-2 transition-all duration-300 ${isActive ? 'ring-4 ring-blue-400' : ''}`;
             teamCard.innerHTML = `
                 <div class="flex items-center gap-2 w-full">
-                    <img src="${team.logoUrl}" alt="${team.name} Logo" class="w-8 h-8 object-contain cursor-pointer ${bonusAnswered ? 'cursor-not-allowed' : ''}" onerror="this.src='https://placehold.co/40x40/E8EAED/3c4043?text=G'" onclick="triggerBonusRound(${index})">
+                    <img src="${team.logoUrl}" alt="${team.name} Logo" class="w-8 h-8 object-contain ${bonusAnswered ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}" onerror="this.src='https://placehold.co/40x40/E8EAED/3c4043?text=G'" onclick="triggerBonusRound(${index})">
                     <div class="flex-grow">
                         <p class="text-sm font-bold">${team.name}</p>
                         <p class="score-display-${index} text-xl font-bold text-green-600 transition-colors duration-300">${teamScores[team.name] || 0}</p>
@@ -335,7 +335,7 @@
                 </div>
             `;
             updateClueDisplay(clueHTML);
-            startTimer(30, false);
+            startTimer(30);
         }
         renderQuestionGrid();
     }
@@ -345,7 +345,19 @@
         if (isCorrect) {
             playAudio(rightSound);
             adjustScore(currentTeamIndex, 10);
-            nextTurn();
+            const question = jeopardyQuestions.find(q => q.id === lastClickedQuestionId);
+            const teamName = teams[currentTeamIndex].name;
+            const answer = question ? question.response : 'the correct answer';
+
+            const wellDoneHTML = `
+                <div class="flex-grow flex items-center justify-center flex-col text-center p-4">
+                    <h2 class="text-2xl font-bold text-green-600">Well Done, ${teamName}!</h2>
+                    <p class="text-xl mt-2">The correct answer is:</p>
+                    <p class="text-2xl font-bold mt-1">${answer}</p>
+                    <button class="btn-press mt-6 font-bold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 bg-blue-600 text-white text-base" onclick="nextTurn()">Continue</button>
+                </div>
+            `;
+            updateClueDisplay(wellDoneHTML);
         } else {
             playAudio(wrongSound);
             enterStealMode();
@@ -369,11 +381,9 @@
             <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-gray-500 text-white mt-2 text-sm" onclick="noSteal()">No Steal</button>
         `;
         updateClueDisplay(stealHTML);
-        startTimer(15, true);
     }
     
     window.selectStealingTeam = (teamIndex) => {
-        stopTimer();
         const stealAttemptHTML = `
              <div class="flex-grow flex items-center justify-center flex-col">
                 <p class="text-2xl font-bold">Steal attempt by:</p>
@@ -385,17 +395,57 @@
             </div>
         `;
         updateClueDisplay(stealAttemptHTML);
+        startTimer(15, true);
     }
 
     window.noSteal = () => {
         stopTimer();
-        nextTurn();
+        const question = jeopardyQuestions.find(q => q.id === lastClickedQuestionId);
+        const answer = question ? question.response : 'the correct answer';
+
+        const answerRevealHTML = `
+            <div class="flex-grow flex items-center justify-center flex-col text-center p-4">
+                <h2 class="text-2xl font-bold text-yellow-600">No Steal!</h2>
+                <p class="text-xl mt-2">The correct answer was:</p>
+                <p class="text-2xl font-bold mt-1">${answer}</p>
+                <button class="btn-press mt-6 font-bold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 bg-blue-600 text-white text-base" onclick="nextTurn()">Continue</button>
+            </div>
+        `;
+        updateClueDisplay(answerRevealHTML);
     }
     
     window.handleStealAnswer = (teamIndex, isCorrect) => {
-        playAudio(isCorrect ? rightSound : wrongSound);
-        adjustScore(teamIndex, isCorrect ? 5 : -5);
-        nextTurn();
+        stopTimer();
+        if (teamIndex !== null) {
+            playAudio(isCorrect ? rightSound : wrongSound);
+            adjustScore(teamIndex, isCorrect ? 5 : -5);
+        }
+        
+        const question = jeopardyQuestions.find(q => q.id === lastClickedQuestionId);
+        const answer = question ? question.response : 'the correct answer';
+
+        if (isCorrect) {
+            const teamName = teams[teamIndex].name;
+            const wellDoneHTML = `
+                <div class="flex-grow flex items-center justify-center flex-col text-center p-4">
+                    <h2 class="text-2xl font-bold text-green-600">Well Done, ${teamName}! (Steal)</h2>
+                    <p class="text-xl mt-2">The correct answer is:</p>
+                    <p class="text-2xl font-bold mt-1">${answer}</p>
+                    <button class="btn-press mt-6 font-bold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 bg-blue-600 text-white text-base" onclick="nextTurn()">Continue</button>
+                </div>
+            `;
+            updateClueDisplay(wellDoneHTML);
+        } else {
+            const wrongAnswerHTML = `
+                <div class="flex-grow flex items-center justify-center flex-col text-center p-4">
+                    <h2 class="text-2xl font-bold text-red-600">Incorrect!</h2>
+                    <p class="text-xl mt-2">The correct answer was:</p>
+                    <p class="text-2xl font-bold mt-1">${answer}</p>
+                    <button class="btn-press mt-6 font-bold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 bg-blue-600 text-white text-base" onclick="nextTurn()">Continue</button>
+                </div>
+            `;
+            updateClueDisplay(wrongAnswerHTML);
+        }
     }
 
     window.manualAdjustScore = (teamIndex, points) => {
@@ -418,7 +468,7 @@
         }
     }
 
-    function nextTurn() {
+    window.nextTurn = () => {
         if (answeredQuestions.length === jeopardyQuestions.length) {
             endGame();
             return;
@@ -440,42 +490,73 @@
             <div class="flex-grow flex items-center justify-center flex-col">
                 <p class="text-2xl font-bold text-purple-600">BONUS QUESTION!</p>
                 <p class="text-xl font-light mt-2 text-center p-2">${bonusQuestion.clue}</p>
-                <p class="text-lg text-gray-600 mt-4">Which team answered first?</p>
             </div>
-            <div class="flex space-x-2 mt-2 flex-wrap justify-center">
-                ${teams.map((team, index) => {
-                    return `<button class="btn-press rounded-full w-14 h-14 flex items-center justify-center border-4 border-transparent hover:border-purple-400 transition-all" onclick="selectBonusTeam(${index})">
-                                <img src="${team.logoUrl}" class="w-12 h-12 rounded-full object-cover" onerror="this.src='https://placehold.co/48x48/E8EAED/3c4043?text=G'">
-                            </button>`;
-                }).join('')}
+            <div class="grid grid-cols-2 gap-2 mt-4 w-full max-w-md">
+                ${bonusQuestion.options.map(option => `
+                    <button class="btn-press font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 bg-white text-gray-800 border border-gray-300 text-sm" onclick="handleBonusOptionSelect('${option}')">${option}</button>
+                `).join('')}
             </div>
              <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-gray-500 text-white mt-4 text-sm" onclick="cancelBonusRound()">Cancel Bonus</button>
         `;
         updateClueDisplay(bonusHTML);
     }
 
-    window.selectBonusTeam = (teamIndex) => {
-        const bonusAttemptHTML = `
-             <div class="flex-grow flex items-center justify-center flex-col">
-                <p class="text-2xl font-bold text-purple-600">Bonus Attempt by:</p>
-                <p class="text-xl font-bold text-blue-600 mt-2">${teams[teamIndex].name}</p>
-            </div>
-            <div class="flex space-x-2 mt-2">
-                <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-green-500 text-white text-sm" onclick="handleBonusAnswer(${teamIndex}, true)">Right (+5)</button>
-                <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-red-500 text-white text-sm" onclick="handleBonusAnswer(${teamIndex}, false)">Wrong (-5)</button>
+    window.handleBonusOptionSelect = (selectedOption) => {
+        const bonusQuestion = bonusQuestions.find(q => q.teamIndex === activeBonusIndex);
+        const isCorrect = selectedOption === bonusQuestion.answer;
+        
+        let resultHTML;
+        if (isCorrect) {
+            playAudio(rightSound);
+            resultHTML = `<h2 class="text-2xl font-bold text-green-600">Correct!</h2>`;
+        } else {
+            playAudio(wrongSound);
+            resultHTML = `
+                <h2 class="text-2xl font-bold text-red-600">Incorrect!</h2>
+                <p class="text-xl mt-2">The correct answer was: <span class="font-bold">${bonusQuestion.answer}</span></p>
+            `;
+        }
+
+        const teamSelectionHTML = `
+            <div class="flex-grow flex items-center justify-center flex-col text-center p-4">
+                ${resultHTML}
+                <p class="text-lg text-gray-600 mt-4">Which team attempted the bonus?</p>
+                <div class="flex space-x-2 mt-2 flex-wrap justify-center">
+                    ${teams.map((team, index) => {
+                        return `<button class="btn-press rounded-full w-14 h-14 flex items-center justify-center border-4 border-transparent hover:border-purple-400 transition-all" onclick="assignBonusPoints(${index}, ${isCorrect})">
+                                    <img src="${team.logoUrl}" class="w-12 h-12 rounded-full object-cover" onerror="this.src='https://placehold.co/48x48/E8EAED/3c4043?text=G'" title="${team.name}">
+                                </button>`;
+                    }).join('')}
+                </div>
+                <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-gray-500 text-white mt-4 text-sm" onclick="finishBonusRound(false)">Nobody Answered</button>
             </div>
         `;
-        updateClueDisplay(bonusAttemptHTML);
+        updateClueDisplay(teamSelectionHTML);
     }
 
-    window.handleBonusAnswer = (teamIndex, isCorrect) => {
+    window.assignBonusPoints = (teamIndex, isCorrect) => {
         if (activeBonusIndex === null) return;
-        playAudio(isCorrect ? rightSound : wrongSound);
         adjustScore(teamIndex, isCorrect ? 5 : -5);
-        answeredBonusQuestions.push(activeBonusIndex);
-        activeBonusIndex = null;
+        finishBonusRound(true);
+    }
+
+    window.finishBonusRound = (wasAttempted) => {
+        if (activeBonusIndex !== null) {
+            answeredBonusQuestions.push(activeBonusIndex);
+            activeBonusIndex = null;
+        }
         renderTeams(); // Re-render to update logo clickability
-        updateClueDisplay(`<h2 class="text-2xl font-medium text-gray-600">Bonus round complete. It's ${teams[currentTeamIndex].name}'s turn.</h2>`);
+        updateClueDisplay(`
+            <div class="flex-grow flex items-center justify-center flex-col text-center p-4">
+                <h2 class="text-2xl font-medium text-gray-600">Bonus round complete!</h2>
+                <p class="text-lg mt-2">Returning to ${teams[currentTeamIndex].name}'s turn.</p>
+                <button class="btn-press mt-6 font-bold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 bg-blue-600 text-white text-base" onclick="resumeNormalPlay()">Continue</button>
+            </div>
+        `);
+    }
+
+    window.resumeNormalPlay = () => {
+        updateClueDisplay(`<h2 class="text-2xl font-medium text-gray-600">${teams[currentTeamIndex].name}, select a question.</h2>`);
     }
 
     window.cancelBonusRound = () => {
@@ -523,7 +604,7 @@
     }
 
     // --- TIMER FUNCTIONS ---
-    function startTimer(duration, isStealMode = false) {
+    function startTimer(duration, isSteal = false) {
         clearInterval(timerInterval);
         let timeLeft = duration;
         timerDisplay.textContent = String(timeLeft).padStart(2, '0');
@@ -532,11 +613,13 @@
             timerDisplay.textContent = String(timeLeft).padStart(2, '0');
             if (timeLeft <= 0) {
                 stopTimer();
-                if (!isStealMode) {
+                if (isSteal) {
+                    // If steal timer runs out, it's an incorrect answer
+                    handleStealAnswer(null, false); 
+                } else {
+                   // If main timer runs out, go to steal mode
                    playAudio(wrongSound);
                    enterStealMode();
-                } else {
-                   nextTurn();
                 }
             }
         }, 1000);
@@ -553,4 +636,3 @@
 </script>
 </body>
 </html>
-

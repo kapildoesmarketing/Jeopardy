@@ -157,11 +157,11 @@
     </main>
 
     <!-- Audio elements for sound effects -->
-    <audio id="clueSound" src="tone.mp3" preload="auto"></audio>
-    <audio id="backgroundMusic" src="background.mp3" preload="auto" loop></audio>
-    <audio id="rightSound" src="right.mp3" preload="auto"></audio>
-    <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
-    <audio id="bonusSound" src="bonus.mp3" preload="auto"></audio>
+    <audio id="clueSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_coin.mp3" preload="auto"></audio>
+    <audio id="backgroundMusic" src="https://kapildoesmarketing.github.io/familyfeud/audio/background.mp3" preload="auto" loop></audio>
+    <audio id="rightSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_1-up.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_bowserfalls.mp3" preload="auto"></audio>
+    <audio id="bonusSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_powerup.mp3" preload="auto"></audio>
 
 <script>
     // --- GAME STATE ---
@@ -384,10 +384,14 @@
     }
     
     window.selectStealingTeam = (teamIndex) => {
+        const question = jeopardyQuestions.find(q => q.id === lastClickedQuestionId);
+        const questionClue = question ? question.clue : "Could not retrieve the question.";
+
         const stealAttemptHTML = `
-             <div class="flex-grow flex items-center justify-center flex-col">
+             <div class="flex-grow flex items-center justify-center flex-col text-center p-2">
+                <p class="text-xl font-light mb-4">${questionClue}</p>
                 <p class="text-2xl font-bold">Steal attempt by:</p>
-                <p class="text-xl font-bold text-blue-600 mt-2">${teams[teamIndex].name}</p>
+                <p class="text-xl font-bold text-blue-600 mt-1">${teams[teamIndex].name}</p>
             </div>
             <div class="flex space-x-2 mt-2">
                 <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-green-500 text-white text-sm" onclick="handleStealAnswer(${teamIndex}, true)">Right (+5)</button>

@@ -202,22 +202,21 @@
         { teamIndex: 4, clue: "On average YouTube Ads drove an uplift on 'Purchase Intent' x times greater than Social Platform Ads across all Kantar Context Lab Studies in India.", options: ["1.2x", "1.5x", "2.0x", "2.5x"], answer: "1.2x" }
     ];
     
-    // --- CHANGE: Updated questions and their order ---
     const jeopardyQuestions = [
-        { id: 1, clue: "This feature can supercharge the performance of Search Ads and has shown a 27% increase in conversions for activated campaigns by leveraging automated creatives and Keywordless targeting. [ Hint: new feature recently launched ]", response: "What is AI Max for Search?" },
-        { id: 2, clue: "With this updated new platform, you can deepen existing connections, find new ones and integrate authentic creator content into your ad strategies [Hint: partnership ads ]", response: "What is creator partnerships hub?" },
-        { id: 3, clue: "Powered by Google AI, this search feature helps campaigns capture additional valuable conversions by tapping into more diverse search sources / queries within a flexible ROAS. [ Hint: it is related to bidding ]", response: "What is Smart Bidding Exploration?" },
-        { id: 4, clue: "This new Performance Max feature provides channel-level breakdowns of performance, helping advertisers optimize their campaigns. [ Hint : It is a new report within Pmax ]", response: "What is Channel Performance Reporting?" },
-        { id: 5, clue: "Now offering increased visibility within Performance Max, this report allows you to find customer queries and make informed optimizations.[ Hint: Report also available in Search campaigns]", response: "What is the Search terms report?" },
+        { id: 1, clue: "This feature can supercharge the performance of Search Ads and has shown a 27% increase in conversions for activated campaigns by leveraging automated creatives and Keywordless targeting.", response: "What is AI Max for Search?" },
+        { id: 2, clue: "With this updated new platform, you can deepen existing connections, find new ones and integrate authentic creator content into your ad strategies", response: "What is creator partnerships hub?" },
+        { id: 3, clue: "Powered by Google AI, this search feature helps campaigns capture additional valuable conversions by tapping into more diverse search sources / queries within a flexible ROAS.", response: "What is Smart Bidding Exploration?" },
+        { id: 4, clue: "This new Performance Max feature provides channel-level breakdowns of performance, helping advertisers optimize their campaigns.", response: "What is Channel Performance Reporting?" },
+        { id: 5, clue: "Now offering increased visibility within Performance Max, this report allows you to find customer queries and make informed optimizations.", response: "What is the Search terms report?" },
         { id: 6, clue: "This is Google owned inventory is now available on Demand Gen", response: "What is Maps?" },
-        { id: 7, clue: "Interactive shopping experience on Youtube, powered by the Google Merchant Center, that lets viewers discover and engage with products directly from the TV screen. [Hint: Its a video ad format on YT ]", response: "What is Shoppable CTV?" },
+        { id: 7, clue: "Interactive shopping experience on Youtube, powered by the Google Merchant Center, that lets viewers discover and engage with products directly from the TV screen.", response: "What is Shoppable CTV?" },
         { id: 8, clue: "Most prominent Youtube placement, is now shoppable on Mobile", response: "What is Shoppable MH?" },
-        { id: 9, clue: "This is new Search product / feature expands what AI Overviews can do, with more advanced reasoning and multimodality and a chat like experience [Hint: a new way to search on Google Search]", response: "What is AI mode?" },
-        { id: 10, clue: "[This feature on Search ads] OR [Performance Max] OR [AI Max in Search] will be the best way to leverage ads in AI Overviews. [Hint: feature related to KWs ]", response: "What is broad match?" },
-        { id: 11, clue: "Merchants using this new Demand Gen feature have seen an average 11% increase in conversion value by seamlessly adding products to a user's cart on their website. [Hint: Enables customers to open a webpage easily without changing tabs ]", response: "What are Checkout Links?" },
+        { id: 9, clue: "This is new Search product / feature expands what AI Overviews can do, with more advanced reasoning and multimodality and a chat like experience ", response: "What is AI mode?" },
+        { id: 10, clue: "[This feature on Search ads] OR [Performance Max] OR [AI Max in Search] will be the best way to leverage ads in AI Overviews.", response: "What is broad match?" },
+        { id: 11, clue: "Merchants using this new Demand Gen feature have seen an average 11% increase in conversion value by seamlessly adding products to a user's cart on their website.", response: "What are Checkout Links?" },
         { id: 12, clue: "This feature related to bidding is now available in Demand Gen campaigns which was earlier available in Pmax, Search & Shopping", response: "What is NCA?" },
         { id: 13, clue: "This new feature / tool in GA4 helps you analyze cross-channel performance and determine where to adjust budgets or invest incremental media dollars, directly in Google Analytics.", response: "What is Cross-Channel Budgeting Tool ?" },
-        { id: 14, clue: "This tagging solution for advertisers enhances conversion data accuracy by routing it through your website’s own server, improving bidding, campaign optimization, and ROAS. [ Hint: Server side tagging]", response: "What is Google tag gateway?" },
+        { id: 14, clue: "This tagging solution for advertisers enhances conversion data accuracy by routing it through your website’s own server, improving bidding, campaign optimization, and ROAS.", response: "What is Google tag gateway?" },
         { id: 15, clue: "This new NCA feature expands on existing capabilities of the new customer acquisition goal to not only optimize to the acquisition of new customers, but specifically optimize towards ones who are not yet searching for or engaging with your Brand", response: "What is Prospecting Mode in NCA?" },
     ];
 
@@ -301,7 +300,6 @@
         questionGrid.innerHTML = '';
         for (let i = 1; i <= 15; i++) {
             const questionDiv = document.createElement('div');
-            // --- CHANGE: Set hard questions from ID 11-15 ---
             const isHard = i >= 11;
             const isAnswered = answeredQuestions.includes(i);
             
@@ -327,15 +325,8 @@
     // --- GAME LOGIC ---
     function startGame() {
         gameStarted = true;
-        currentTeamIndex = 0;
-        answeredQuestions = [];
-        answeredBonusQuestions = [];
-        activeBonusIndex = null;
-        teamScores = teams.reduce((acc, team) => ({ ...acc, [team.name]: 0 }), {});
         updateClueDisplay(`<h2 class="text-2xl font-medium text-gray-600">Select a question to begin.</h2>`);
-        
         playAudio(backgroundMusic, 0.2);
-
         renderGame();
     }
 
@@ -359,7 +350,7 @@
                 </div>
             `;
             updateClueDisplay(clueHTML);
-            startTimer(30);
+            startTimer(30, 'main');
         }
         renderQuestionGrid();
     }
@@ -368,7 +359,6 @@
         stopTimer();
         if (isCorrect) {
             playAudio(rightSound, 0.5);
-            // --- CHANGE: Award 15 points for hard questions (11-15), 10 otherwise ---
             const points = (lastClickedQuestionId >= 11) ? 15 : 10;
             adjustScore(currentTeamIndex, points);
             
@@ -426,7 +416,7 @@
             </div>
         `;
         updateClueDisplay(stealAttemptHTML);
-        startTimer(15, true);
+        startTimer(15, 'steal');
     }
 
     window.noSteal = () => {
@@ -534,6 +524,7 @@
              <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-gray-500 text-white mt-4 text-sm" onclick="cancelBonusRound()">Cancel Bonus</button>
         `;
         updateClueDisplay(bonusHTML);
+        startTimer(30, 'bonus');
     }
 
     window.handleBonusOptionSelect = (selectedOption) => {
@@ -571,7 +562,6 @@
 
     window.assignBonusPoints = (teamIndex, isCorrect) => {
         if (activeBonusIndex === null) return;
-        // --- CHANGE: Bonus points are now 15 for correct, -5 for incorrect ---
         adjustScore(teamIndex, isCorrect ? 15 : -5);
         finishBonusRound(true);
     }
@@ -595,9 +585,16 @@
         updateClueDisplay(`<h2 class="text-2xl font-medium text-gray-600">${teams[currentTeamIndex].name}, select a question.</h2>`);
     }
 
-    window.cancelBonusRound = () => {
+    window.cancelBonusRound = (message = "Bonus round canceled.") => {
         activeBonusIndex = null;
-        updateClueDisplay(`<h2 class="text-2xl font-medium text-gray-600">Bonus round canceled. It's ${teams[currentTeamIndex].name}'s turn.</h2>`);
+        stopTimer(); // Ensure timer is stopped
+        updateClueDisplay(`
+            <div class="flex-grow flex items-center justify-center flex-col text-center p-4">
+                <h2 class="text-2xl font-medium text-gray-600">${message}</h2>
+                <p class="text-lg mt-2">Returning to ${teams[currentTeamIndex].name}'s turn.</p>
+                <button class="btn-press mt-6 font-bold py-2 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 bg-blue-600 text-white text-base" onclick="resumeNormalPlay()">Continue</button>
+            </div>
+        `);
     }
 
     function endGame() {
@@ -636,11 +633,11 @@
         `;
         updateClueDisplay(endGameHTML);
         currentTeamDisplay.textContent = 'Finished';
-        document.getElementById('playAgainBtn').addEventListener('click', startGame);
+        document.getElementById('playAgainBtn').addEventListener('click', initializeApp);
     }
 
     // --- TIMER FUNCTIONS ---
-    function startTimer(duration, isSteal = false) {
+    function startTimer(duration, timerType = 'main') {
         clearInterval(timerInterval);
         let timeLeft = duration;
         timerDisplay.textContent = String(timeLeft).padStart(2, '0');
@@ -649,13 +646,18 @@
             timerDisplay.textContent = String(timeLeft).padStart(2, '0');
             if (timeLeft <= 0) {
                 stopTimer();
-                if (isSteal) {
-                    // If steal timer runs out, it's an incorrect answer
-                    handleStealAnswer(null, false); 
-                } else {
-                   // If main timer runs out, go to steal mode
-                   playAudio(wrongSound, 0.5);
-                   enterStealMode();
+                switch (timerType) {
+                    case 'steal':
+                        handleStealAnswer(null, false);
+                        break;
+                    case 'bonus':
+                        cancelBonusRound("Time's up! Bonus round canceled.");
+                        break;
+                    case 'main':
+                    default:
+                        playAudio(wrongSound, 0.5);
+                        enterStealMode();
+                        break;
                 }
             }
         }, 1000);
@@ -667,8 +669,26 @@
     }
 
     // --- INITIALIZATION ---
+    function initializeApp() {
+        gameStarted = false;
+        currentTeamIndex = 0;
+        answeredQuestions = [];
+        answeredBonusQuestions = [];
+        activeBonusIndex = null;
+        lastClickedQuestionId = null;
+        teamScores = teams.reduce((acc, team) => ({ ...acc, [team.name]: 0 }), {});
+        
+        stopTimer();
+        if (backgroundMusic.played.length > 0 && !backgroundMusic.paused) {
+            backgroundMusic.pause();
+        }
+        backgroundMusic.currentTime = 0;
+
+        renderGame();
+    }
+
     endGameButton.addEventListener('click', endGame);
-    window.onload = renderGame;
+    window.onload = initializeApp;
 </script>
 </body>
 </html>

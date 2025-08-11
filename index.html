@@ -168,11 +168,11 @@
     </main>
 
     <!-- Audio elements for sound effects -->
-    <audio id="clueSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_coin.mp3" preload="auto"></audio>
-    <audio id="backgroundMusic" src="https://kapildoesmarketing.github.io/familyfeud/audio/background.mp3" preload="auto" loop></audio>
-    <audio id="rightSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_1-up.mp3" preload="auto"></audio>
-    <audio id="wrongSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_bowserfalls.mp3" preload="auto"></audio>
-    <audio id="bonusSound" src="https://kapildoesmarketing.github.io/familyfeud/audio/smb_powerup.mp3" preload="auto"></audio>
+    <audio id="clueSound" src=tone.mp3 preload="auto"></audio>
+    <audio id="backgroundMusic" src=bg.mp3 preload="auto" loop></audio>
+    <audio id="rightSound" src=rightding.mp3 preload="auto"></audio>
+    <audio id="wrongSound" src=wrong.mp3 preload="auto"></audio>
+    <audio id="bonusSound" src=drum.mp3 preload="auto"></audio>
 
 <script>
     // --- GAME STATE ---
@@ -235,7 +235,8 @@
     const bonusSound = document.getElementById('bonusSound');
 
     // --- UTILITY FUNCTIONS ---
-    function playAudio(audioElement) {
+    function playAudio(audioElement, volume = 0.5) {
+        audioElement.volume = volume;
         audioElement.currentTime = 0;
         audioElement.play().catch(error => console.error(`Audio playback failed: ${error}`));
     }
@@ -333,8 +334,7 @@
         teamScores = teams.reduce((acc, team) => ({ ...acc, [team.name]: 0 }), {});
         updateClueDisplay(`<h2 class="text-2xl font-medium text-gray-600">Select a question to begin.</h2>`);
         
-        backgroundMusic.volume = 0.3;
-        playAudio(backgroundMusic);
+        playAudio(backgroundMusic, 0.2);
 
         renderGame();
     }
@@ -344,7 +344,7 @@
         lastClickedQuestionId = questionId; // Store the current question's ID
         if (answeredQuestions.includes(questionId)) return;
         
-        playAudio(clueSound);
+        playAudio(clueSound, 0.5);
         answeredQuestions.push(questionId);
         const question = jeopardyQuestions.find(q => q.id === questionId);
         
@@ -367,7 +367,7 @@
     window.handleAnswer = (isCorrect) => {
         stopTimer();
         if (isCorrect) {
-            playAudio(rightSound);
+            playAudio(rightSound, 0.5);
             // --- CHANGE: Award 15 points for hard questions (11-15), 10 otherwise ---
             const points = (lastClickedQuestionId >= 11) ? 15 : 10;
             adjustScore(currentTeamIndex, points);
@@ -386,7 +386,7 @@
             `;
             updateClueDisplay(wellDoneHTML);
         } else {
-            playAudio(wrongSound);
+            playAudio(wrongSound, 0.5);
             enterStealMode();
         }
     }
@@ -448,7 +448,11 @@
     window.handleStealAnswer = (teamIndex, isCorrect) => {
         stopTimer();
         if (teamIndex !== null) {
-            playAudio(isCorrect ? rightSound : wrongSound);
+            if (isCorrect) {
+                playAudio(rightSound, 0.5);
+            } else {
+                playAudio(wrongSound, 0.5);
+            }
             adjustScore(teamIndex, isCorrect ? 5 : -5);
         }
         
@@ -513,7 +517,7 @@
     window.triggerBonusRound = (logoIndex) => {
         if (answeredBonusQuestions.includes(logoIndex) || !gameStarted) return;
         stopTimer();
-        playAudio(bonusSound);
+        playAudio(bonusSound, 0.6);
         activeBonusIndex = logoIndex;
         const bonusQuestion = bonusQuestions.find(q => q.teamIndex === logoIndex);
 
@@ -538,10 +542,10 @@
         
         let resultHTML;
         if (isCorrect) {
-            playAudio(rightSound);
+            playAudio(rightSound, 0.5);
             resultHTML = `<h2 class="text-2xl font-bold text-green-600">Correct!</h2>`;
         } else {
-            playAudio(wrongSound);
+            playAudio(wrongSound, 0.5);
             resultHTML = `
                 <h2 class="text-2xl font-bold text-red-600">Incorrect!</h2>
                 <p class="text-xl mt-2">The correct answer was: <span class="font-bold">${bonusQuestion.answer}</span></p>
@@ -650,7 +654,7 @@
                     handleStealAnswer(null, false); 
                 } else {
                    // If main timer runs out, go to steal mode
-                   playAudio(wrongSound);
+                   playAudio(wrongSound, 0.5);
                    enterStealMode();
                 }
             }

@@ -184,6 +184,7 @@
     let answeredBonusQuestions = [];
     let activeBonusIndex = null;
     let lastClickedQuestionId = null;
+    let isQuestionActive = false; // To prevent bonus rounds during a question
     
     // --- STATIC DATA ---
     const teams = [
@@ -202,7 +203,7 @@
         { teamIndex: 4, clue: "On average YouTube Ads drove an uplift on 'Purchase Intent' x times greater than Social Platform Ads across all Kantar Context Lab Studies in India.", options: ["1.2x", "1.5x", "2.0x", "2.5x"], answer: "1.2x" }
     ];
     
-    const jeopardyQuestions = [
+ const jeopardyQuestions = [
         { id: 1, clue: "This feature can supercharge the performance of Search Ads and has shown a 27% increase in conversions for activated campaigns by leveraging automated creatives and Keywordless targeting.", response: "What is AI Max for Search?" },
         { id: 2, clue: "With this updated new platform, you can deepen existing connections, find new ones and integrate authentic creator content into your ad strategies", response: "What is creator partnerships hub?" },
         { id: 3, clue: "Powered by Google AI, this search feature helps campaigns capture additional valuable conversions by tapping into more diverse search sources / queries within a flexible ROAS.", response: "What is Smart Bidding Exploration?" },
@@ -219,6 +220,7 @@
         { id: 14, clue: "This tagging solution for advertisers enhances conversion data accuracy by routing it through your website’s own server, improving bidding, campaign optimization, and ROAS.", response: "What is Google tag gateway?" },
         { id: 15, clue: "This new NCA feature expands on existing capabilities of the new customer acquisition goal to not only optimize to the acquisition of new customers, but specifically optimize towards ones who are not yet searching for or engaging with your Brand", response: "What is Prospecting Mode in NCA?" },
     ];
+
 
     // --- DOM ELEMENTS CACHING---
     const teamsContainer = document.getElementById('teamsContainer');
@@ -335,6 +337,7 @@
         lastClickedQuestionId = questionId; // Store the current question's ID
         if (answeredQuestions.includes(questionId)) return;
         
+        isQuestionActive = true; // A question is now active, so lock state
         playAudio(clueSound, 0.5);
         answeredQuestions.push(questionId);
         const question = jeopardyQuestions.find(q => q.id === questionId);
@@ -357,6 +360,7 @@
 
     window.handleAnswer = (isCorrect) => {
         stopTimer();
+        isQuestionActive = false; // Question is resolved, unlock state
         if (isCorrect) {
             playAudio(rightSound, 0.5);
             const points = (lastClickedQuestionId >= 11) ? 15 : 10;
@@ -421,6 +425,7 @@
 
     window.noSteal = () => {
         stopTimer();
+        isQuestionActive = false; // Question is resolved, unlock state
         const question = jeopardyQuestions.find(q => q.id === lastClickedQuestionId);
         const answer = question ? question.response : 'the correct answer';
 
@@ -437,6 +442,7 @@
     
     window.handleStealAnswer = (teamIndex, isCorrect) => {
         stopTimer();
+        isQuestionActive = false; // Question is resolved, unlock state
         if (teamIndex !== null) {
             if (isCorrect) {
                 playAudio(rightSound, 0.5);
@@ -505,7 +511,7 @@
     
     // --- BONUS ROUND LOGIC ---
     window.triggerBonusRound = (logoIndex) => {
-        if (answeredBonusQuestions.includes(logoIndex) || !gameStarted) return;
+        if (answeredBonusQuestions.includes(logoIndex) || !gameStarted || isQuestionActive) return;
         stopTimer();
         playAudio(bonusSound, 0.6);
         activeBonusIndex = logoIndex;
@@ -600,6 +606,7 @@
     function endGame() {
         stopTimer();
         gameStarted = false;
+        isQuestionActive = false;
         questionGrid.innerHTML = '';
         backgroundMusic.pause();
 
@@ -676,6 +683,7 @@
         answeredBonusQuestions = [];
         activeBonusIndex = null;
         lastClickedQuestionId = null;
+        isQuestionActive = false;
         teamScores = teams.reduce((acc, team) => ({ ...acc, [team.name]: 0 }), {});
         
         stopTimer();

@@ -68,6 +68,17 @@
         .question-number:hover:not(.answered) {
             background-color: #DADCE0;
         }
+
+        /* --- New styles for hard questions --- */
+        .question-number.hard-question:not(.answered) {
+            background-color: #FCE4EC; /* Light Pink */
+            color: #880E4F; /* Dark Pink */
+            border: 1px solid #F48FB1;
+        }
+
+        .question-number.hard-question:hover:not(.answered) {
+            background-color: #F8BBD0;
+        }
         
         /* Keyframe Animations */
         @keyframes pop-in {
@@ -191,21 +202,22 @@
         { teamIndex: 4, clue: "On average YouTube Ads drove an uplift on 'Purchase Intent' x times greater than Social Platform Ads across all Kantar Context Lab Studies in India.", options: ["1.2x", "1.5x", "2.0x", "2.5x"], answer: "1.2x" }
     ];
     
+    // --- CHANGE: Updated questions and their order ---
     const jeopardyQuestions = [
-        { id: 1, clue: "This feature can supercharge the performance of Search Ads and has shown a 27% increase in conversions for activated campaigns.", response: "What is AI Max for Search?" },
-        { id: 2, clue: "Merchants using this new Demand Gen feature have seen an average 11% increase in conversion value by seamlessly adding products to a user's cart on their website.", response: "What are Checkout Links?" },
-        { id: 3, clue: "Powered by Google AI, this feature helps campaigns capture additional valuable conversions by tapping into more diverse search sources.", response: "What is Smart Bidding Exploration?" },
-        { id: 4, clue: "This new Performance Max feature provides channel-level breakdowns of performance, helping advertisers optimize their campaigns.", response: "What is Channel Performance Reporting?" },
-        { id: 5, clue: "Now offering increased visibility within Performance Max, this report allows you to find customer queries and make informed optimizations.", response: "What is the Search terms report?" },
+        { id: 1, clue: "This feature can supercharge the performance of Search Ads and has shown a 27% increase in conversions for activated campaigns by leveraging automated creatives and Keywordless targeting. [ Hint: new feature recently launched ]", response: "What is AI Max for Search?" },
+        { id: 2, clue: "With this updated new platform, you can deepen existing connections, find new ones and integrate authentic creator content into your ad strategies [Hint: partnership ads ]", response: "What is creator partnerships hub?" },
+        { id: 3, clue: "Powered by Google AI, this search feature helps campaigns capture additional valuable conversions by tapping into more diverse search sources / queries within a flexible ROAS. [ Hint: it is related to bidding ]", response: "What is Smart Bidding Exploration?" },
+        { id: 4, clue: "This new Performance Max feature provides channel-level breakdowns of performance, helping advertisers optimize their campaigns. [ Hint : It is a new report within Pmax ]", response: "What is Channel Performance Reporting?" },
+        { id: 5, clue: "Now offering increased visibility within Performance Max, this report allows you to find customer queries and make informed optimizations.[ Hint: Report also available in Search campaigns]", response: "What is the Search terms report?" },
         { id: 6, clue: "This is Google owned inventory is now available on Demand Gen", response: "What is Maps?" },
-        { id: 7, clue: "Interactive shopping experience, powered by the Google Merchant Center, that lets viewers discover and engage with products directly from the big screen.", response: "What is Shoppable CTV" },
-        { id: 8, clue: "Most prominent placement, is now shoppable on Mobile", response: "What is Shoppable MH?" },
-        { id: 9, clue: "This is new Search product / feature expands what AI Overviews can do, with more advanced reasoning and multimodality", response: "What is AI mode?" },
-        { id: 10, clue: "This feature on Search OR the keywordless targeting technology of Performance Max OR AI Max in Search (beta) will be the best way to leverage ads in AI Overviews.", response: "What is broad match?" },
-        { id: 11, clue: "This feature is now available in Demand Gen campaigns which was earlier available in Pmax, Search & Shopping", response: "What is NCA?" },
-        { id: 12, clue: "With this updated new platform, you can deepen existing connections, find new ones and integrate authentic creator content into your ad strategies", response: "What is creator partnerships hub?" },
-        { id: 13, clue: "This new feature / tool helps you analyze cross-channel performance and determine where to adjust budgets or invest incremental media dollars, directly in Google Analytics.", response: "What is Cross-Channel Budgeting Tool ?" },
-        { id: 14, clue: "This tagging solution for advertisers enhances conversion data accuracy by routing it through your website’s own server, improving bidding, campaign optimization, and ROAS.", response: "What is Google tag gateway?" },
+        { id: 7, clue: "Interactive shopping experience on Youtube, powered by the Google Merchant Center, that lets viewers discover and engage with products directly from the TV screen. [Hint: Its a video ad format on YT ]", response: "What is Shoppable CTV?" },
+        { id: 8, clue: "Most prominent Youtube placement, is now shoppable on Mobile", response: "What is Shoppable MH?" },
+        { id: 9, clue: "This is new Search product / feature expands what AI Overviews can do, with more advanced reasoning and multimodality and a chat like experience [Hint: a new way to search on Google Search]", response: "What is AI mode?" },
+        { id: 10, clue: "[This feature on Search ads] OR [Performance Max] OR [AI Max in Search] will be the best way to leverage ads in AI Overviews. [Hint: feature related to KWs ]", response: "What is broad match?" },
+        { id: 11, clue: "Merchants using this new Demand Gen feature have seen an average 11% increase in conversion value by seamlessly adding products to a user's cart on their website. [Hint: Enables customers to open a webpage easily without changing tabs ]", response: "What are Checkout Links?" },
+        { id: 12, clue: "This feature related to bidding is now available in Demand Gen campaigns which was earlier available in Pmax, Search & Shopping", response: "What is NCA?" },
+        { id: 13, clue: "This new feature / tool in GA4 helps you analyze cross-channel performance and determine where to adjust budgets or invest incremental media dollars, directly in Google Analytics.", response: "What is Cross-Channel Budgeting Tool ?" },
+        { id: 14, clue: "This tagging solution for advertisers enhances conversion data accuracy by routing it through your website’s own server, improving bidding, campaign optimization, and ROAS. [ Hint: Server side tagging]", response: "What is Google tag gateway?" },
         { id: 15, clue: "This new NCA feature expands on existing capabilities of the new customer acquisition goal to not only optimize to the acquisition of new customers, but specifically optimize towards ones who are not yet searching for or engaging with your Brand", response: "What is Prospecting Mode in NCA?" },
     ];
 
@@ -288,11 +300,23 @@
         questionGrid.innerHTML = '';
         for (let i = 1; i <= 15; i++) {
             const questionDiv = document.createElement('div');
-            questionDiv.className = `question-number ${answeredQuestions.includes(i) ? 'answered' : ''}`;
+            // --- CHANGE: Set hard questions from ID 11-15 ---
+            const isHard = i >= 11;
+            const isAnswered = answeredQuestions.includes(i);
+            
+            let classes = 'question-number';
+            if (isAnswered) {
+                classes += ' answered';
+            }
+            if (isHard) {
+                classes += ' hard-question';
+            }
+            
+            questionDiv.className = classes;
             questionDiv.textContent = i;
             questionDiv.dataset.questionId = i;
             questionDiv.style.animationDelay = `${(i - 1) * 0.03}s`; // Staggered animation
-            if (!answeredQuestions.includes(i)) {
+            if (!isAnswered) {
                 questionDiv.addEventListener('click', selectQuestion);
             }
             questionGrid.appendChild(questionDiv);
@@ -344,7 +368,10 @@
         stopTimer();
         if (isCorrect) {
             playAudio(rightSound);
-            adjustScore(currentTeamIndex, 10);
+            // --- CHANGE: Award 15 points for hard questions (11-15), 10 otherwise ---
+            const points = (lastClickedQuestionId >= 11) ? 15 : 10;
+            adjustScore(currentTeamIndex, points);
+            
             const question = jeopardyQuestions.find(q => q.id === lastClickedQuestionId);
             const teamName = teams[currentTeamIndex].name;
             const answer = question ? question.response : 'the correct answer';
@@ -389,9 +416,9 @@
 
         const stealAttemptHTML = `
              <div class="flex-grow flex items-center justify-center flex-col text-center p-2">
-                <p class="text-xl font-light mb-4">${questionClue}</p>
-                <p class="text-2xl font-bold">Steal attempt by:</p>
-                <p class="text-xl font-bold text-blue-600 mt-1">${teams[teamIndex].name}</p>
+                 <p class="text-xl font-light mb-4">${questionClue}</p>
+                 <p class="text-2xl font-bold">Steal attempt by:</p>
+                 <p class="text-xl font-bold text-blue-600 mt-1">${teams[teamIndex].name}</p>
             </div>
             <div class="flex space-x-2 mt-2">
                 <button class="btn-press font-bold py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-105 bg-green-500 text-white text-sm" onclick="handleStealAnswer(${teamIndex}, true)">Right (+5)</button>
@@ -540,7 +567,8 @@
 
     window.assignBonusPoints = (teamIndex, isCorrect) => {
         if (activeBonusIndex === null) return;
-        adjustScore(teamIndex, isCorrect ? 5 : -5);
+        // --- CHANGE: Bonus points are now 15 for correct, -5 for incorrect ---
+        adjustScore(teamIndex, isCorrect ? 15 : -5);
         finishBonusRound(true);
     }
 
@@ -640,3 +668,4 @@
 </script>
 </body>
 </html>
+
